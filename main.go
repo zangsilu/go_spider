@@ -4,16 +4,27 @@ import (
 	"fmt"
 	"regexp"
 	engin "spiderProject/engine"
+	"spiderProject/scheduler"
 	"spiderProject/zhenai/parser"
 )
 
 func main() {
 
-	engin.Run(engin.Request{
+	//单任务版
+	//engin.SimpleEngine{}.Run(engin.Request{
+	//	Url:        "http://www.zhenai.com/zhenghun",
+	//	ParserFunc: parser.ParserCityList,
+	//	//Url:        "http://www.zhenai.com/zhenghun/huairou",
+	//	//ParserFunc: parser.ParserCity,
+	//})
+
+	//并发版
+	engin.ConcurrentEngine{
+		Scheduler:   &scheduler.SimpleScheduler{},
+		WorkerCount: 50,
+	}.Run(engin.Request{
 		Url:        "http://www.zhenai.com/zhenghun",
 		ParserFunc: parser.ParserCityList,
-		//Url:        "http://www.zhenai.com/zhenghun/huairou",
-		//ParserFunc: parser.ParserCity,
 	})
 }
 
