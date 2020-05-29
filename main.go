@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"regexp"
 	engin "spiderProject/engine"
+	"spiderProject/save"
 	"spiderProject/scheduler"
 	"spiderProject/zhenai/parser"
 )
@@ -22,6 +23,7 @@ func main() {
 	engin.ConcurrentEngine{
 		Scheduler:   &scheduler.SimpleScheduler{},
 		WorkerCount: 50,
+		ItemChan:    save.ItemSave(),
 	}.Run(engin.Request{
 		Url:        "http://www.zhenai.com/zhenghun",
 		ParserFunc: parser.ParserCityList,

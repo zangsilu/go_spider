@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"regexp"
 	engin "spiderProject/engine"
 	"spiderProject/model"
@@ -18,6 +19,7 @@ const educationRe = `<td><span class="grayL">学   历：</span>(.+?)</td>`
 const moneyRe = `<td><span class="grayL">月   薪：</span>(.+?)</td>`
 const heightRe = `<td width="180"><span class="grayL">身   高：</span>(.+?)</td>`
 const introRe = `<div class="introduce">(.+?)</div>`
+const allRe = `href="(http://www.zhenai.com/zhenghun/[^"]+)"`
 
 func ParserCity(contents []byte) engin.ParserResult {
 	result := engin.ParserResult{}
@@ -65,6 +67,17 @@ func ParserCity(contents []byte) engin.ParserResult {
 			Url:        nextUrl,
 			ParserFunc: ParserCity,
 		})
+
+	//其他有数据的链接
+	allUrls := regexp.MustCompile(allRe).FindAllSubmatch(contents, -1)
+	for _, url := range allUrls {
+		fmt.Println("url=>", string(url[1]))
+		result.Requests = append(
+			result.Requests, engin.Request{
+				Url:        string(url[1]),
+				ParserFunc: ParserCity,
+			})
+	}
 
 	return result
 }

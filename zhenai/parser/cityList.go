@@ -14,7 +14,7 @@ func ParserCityList(contents []byte) engin.ParserResult {
 
 	result := engin.ParserResult{}
 	for _, v := range matchList {
-		result.Items = append(result.Items, "City:"+string(v[2]))
+		//result.Items = append(result.Items, "City:"+string(v[2]))
 		result.Requests = append(
 			result.Requests, engin.Request{
 				Url:        string(v[1]),
